@@ -1,0 +1,8 @@
+# JAVA files
+
+*.class
+*.jar
+*.ear
+*.war
+*.swp
+*.prefs
