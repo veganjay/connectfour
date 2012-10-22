@@ -39,7 +39,7 @@ public class ConnectFourBoard {
 	public int getTopOfColumn(int col) {
 		int top = 0;
 
-		while(top < ROWS && board[col][top] != null) {
+		while(top < ROWS && !board[col][top].equals(Piece.EMPTY)) {
 			top++;
 		}
 		
@@ -47,9 +47,10 @@ public class ConnectFourBoard {
 	}
 	
 	public void printBoard() {
+		System.out.println("printBoard(): Entered");
 		for (int j = ROWS - 1; j >= 0; j--) {
 			for (int i = 0; i < COLUMNS; i++) {
-				if (board[i][j] == null) {
+				if (board[i][j] == Piece.EMPTY) {
 					System.out.print(". ");
 				} else if (board[i][j] == Piece.RED) {
 					System.out.print("R ");
@@ -63,21 +64,86 @@ public class ConnectFourBoard {
 			System.out.print(i + " ");			
 		}
 		System.out.println();
-		
+		System.out.println("printBoard(): Done.");		
 	}
 	
 	public boolean isWinner(Piece p) {
 		boolean won = false;
 		
+		if (hasHorizontalWin(p)) {
+			won = true;
+		} else if (hasVerticalWin(p)) {
+			won = true;
+		} else if (hasDiagonalWin(p)) {
+			won = true;
+		}
 		return won;
 	}
 	
 	public boolean hasHorizontalWin(Piece p) {
 		boolean won = false;
 
-		for (int i = 0; i < ROWS - 4; i++) {
+		for (int i = 0; i < COLUMNS - 4; i++) {
+			for (int j = 0; j < ROWS; j++) {
+				if (board[i][j]   == p &&
+					board[i+1][j] == p &&
+					board[i+2][j] == p &&
+					board[i+3][j] == p) {
+					won = true;
+					break;
+				}
+			}
 		}
 		
+		return won;
+	}
+	
+	public boolean hasVerticalWin(Piece p) {
+		boolean won = false;
+
+		for (int i = 0; i < COLUMNS; i++) {
+			for (int j = 0; j < ROWS - 4; j++) {
+				if (board[i][j]   == p &&
+					board[i][j+1] == p &&
+					board[i][j+2] == p &&
+					board[i][j+3] == p) {
+					won = true;
+					break;
+				}
+			}
+		}
+		
+		return won;
+	}
+	
+	public boolean hasDiagonalWin(Piece p) {
+		boolean won = false;
+		
+		// Check the first diagonal
+		for (int i = 0; i < COLUMNS - 4; i++) {
+			for (int j = 0; j < ROWS - 4; j++) {
+				if (board[i][j]   == p &&
+					board[i+1][j+1] == p &&
+					board[i+2][j+2] == p &&
+					board[i+3][j+3] == p) {
+					won = true;
+					break;
+				}
+			}
+		}
+		
+		// Check the second diagonal
+		for (int i = 4; i < COLUMNS ; i++) {
+			for (int j = 0; j < ROWS - 4; j++) {
+				if (board[i][j]   == p &&
+					board[i-1][j+1] == p &&
+					board[i-2][j+2] == p &&
+					board[i-3][j+3] == p) {
+					won = true;
+					break;
+				}
+			}
+		}
 		return won;
 	}
 	
