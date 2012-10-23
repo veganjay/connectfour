@@ -55,10 +55,12 @@ public class ConnectFourGame {
 				// Display the board;
 				board.printBoard();
 	
+				// Check for winner
 				if (board.isWinner(p)) {
 					System.out.println(p + " is the winner!");
 					break;
 				}
+				
 				// Switch pieces
 				if (p == Piece.BLACK) {
 					p = Piece.RED;
