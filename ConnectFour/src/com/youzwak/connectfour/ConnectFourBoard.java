@@ -79,15 +79,14 @@ public class ConnectFourBoard {
 	}
 	
 	public void printBoard() {
-		System.out.println("printBoard(): Entered");
 		for (int j = ROWS - 1; j >= 0; j--) {
 			for (int i = 0; i < COLUMNS; i++) {
 				if (board[i][j] == Piece.EMPTY) {
 					System.out.print(". ");
 				} else if (board[i][j] == Piece.RED) {
-					System.out.print("R ");
+					System.out.print("O ");
 				} else if (board[i][j] == Piece.BLACK) {
-					System.out.print("B ");
+					System.out.print("X ");
 				}
 			}
 			System.out.println();
@@ -96,7 +95,6 @@ public class ConnectFourBoard {
 			System.out.print(i + " ");			
 		}
 		System.out.println();
-		System.out.println("printBoard(): Done.");		
 	}
 	
 	public boolean isWinner(Piece p) {
@@ -130,6 +128,46 @@ public class ConnectFourBoard {
 		return won;
 	}
 	
+	public int getThreats(Piece p) {
+		int threat = 0;
+		
+		threat = threat + getHorizontalThreats(p);
+		threat = threat + getVerticalThreats(p);
+		threat = threat + getDiagonalThreats(p);
+
+		return threat;
+	}
+	
+	public int getHorizontalThreats(Piece p) {
+		int numEmpty = 0;
+		int numPiece = 0;
+		int threats  = 0;
+		
+		for (int i = 0; i <= COLUMNS - 4; i++) {
+			for (int j = 0; j < ROWS; j++) {
+
+				// Count the number of empty and player pieces
+				numEmpty = 0;
+				numPiece = 0;
+
+				for (int k = 0; k < 4; k++) {
+					if (board[i+k][j]   == p) {
+						numPiece++;
+					} else if (board[i+k][j] == Piece.EMPTY) {
+						numEmpty++;
+					}					
+				}
+
+				// Check for three pieces together with an empty space
+				if (numPiece == 3 && numEmpty == 1) {
+					threats++;
+				}
+			}
+		}
+		
+		return threats;
+	}
+	
 	public boolean hasVerticalWin(Piece p) {
 		boolean won = false;
 
@@ -148,12 +186,43 @@ public class ConnectFourBoard {
 		return won;
 	}
 	
+	public int getVerticalThreats(Piece p) {
+		int numEmpty = 0;
+		int numPiece = 0;
+		int threats  = 0;
+		
+		for (int i = 0; i < COLUMNS; i++) {
+			for (int j = 0; j <= ROWS - 4; j++) {
+
+				// Count the number of empty and player pieces
+				numEmpty = 0;
+				numPiece = 0;
+
+				for (int k = 0; k < 4; k++) {
+					if (board[i][j+k]   == p) {
+						numPiece++;
+					} else if (board[i][j+k] == Piece.EMPTY) {
+						numEmpty++;
+					}					
+				}
+
+				// Check for three pieces together with an empty space
+				if (numPiece == 3 && numEmpty == 1) {
+					threats++;
+				}
+			}
+		}
+		
+		return threats;
+	}
+
+	
 	public boolean hasDiagonalWin(Piece p) {
 		boolean won = false;
 		
 		// Check the first diagonal
-		for (int i = 0; i < COLUMNS - 4; i++) {
-			for (int j = 0; j < ROWS - 4; j++) {
+		for (int i = 0; i <= COLUMNS - 4; i++) {
+			for (int j = 0; j <= ROWS - 4; j++) {
 				if (board[i][j]   == p &&
 					board[i+1][j+1] == p &&
 					board[i+2][j+2] == p &&
@@ -166,7 +235,7 @@ public class ConnectFourBoard {
 		
 		// Check the second diagonal
 		for (int i = 4; i < COLUMNS ; i++) {
-			for (int j = 0; j < ROWS - 4; j++) {
+			for (int j = 0; j <= ROWS - 4; j++) {
 				if (board[i][j]   == p &&
 					board[i-1][j+1] == p &&
 					board[i-2][j+2] == p &&
@@ -177,6 +246,60 @@ public class ConnectFourBoard {
 			}
 		}
 		return won;
+	}
+	
+	public int getDiagonalThreats(Piece p) {
+		int numEmpty = 0;
+		int numPiece = 0;
+		int threats  = 0;
+		
+		// Check the first diagonal
+		for (int i = 0; i <= COLUMNS - 4; i++) {
+			for (int j = 0; j <= ROWS - 4; j++) {
+
+				// Count the number of empty and player pieces
+				numEmpty = 0;
+				numPiece = 0;
+
+				for (int k = 0; k < 4; k++) {
+					if (board[i+k][j+k]   == p) {
+						numPiece++;
+					} else if (board[i+k][j+k] == Piece.EMPTY) {
+						numEmpty++;
+					}					
+				}
+
+				// Check for three pieces together with an empty space
+				if (numPiece == 3 && numEmpty == 1) {
+					threats++;
+				}
+			}
+		}
+		
+		// Check the second diagonal
+		for (int i = 4; i < COLUMNS ; i++) {
+			for (int j = 0; j <= ROWS - 4; j++) {
+
+				// Count the number of empty and player pieces
+				numEmpty = 0;
+				numPiece = 0;
+
+				for (int k = 0; k < 4; k++) {
+					if (board[i-k][j+k]   == p) {
+						numPiece++;
+					} else if (board[i-k][j+k] == Piece.EMPTY) {
+						numEmpty++;
+					}					
+				}
+
+				// Check for three pieces together with an empty space
+				if (numPiece == 3 && numEmpty == 1) {
+					threats++;
+				}
+			}
+		}
+		
+		return threats;
 	}
 	
 	public class OutOfRangeException extends Exception {

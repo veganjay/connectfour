@@ -10,10 +10,10 @@ import com.youzwak.connectfour.ConnectFourBoard.Piece;
 public class ConnectFourAI {
 	
 	// Constants
-	public static final int MINMAX_DEPTH = 8;
+	public static final int MINMAX_DEPTH = 5;
 	
 	// Debug variable
-	private boolean debugEnabled = true;
+	private boolean debugEnabled = false;
 	
 	// Member variables
 	private Piece computerPiece;
@@ -95,13 +95,27 @@ public class ConnectFourAI {
 			int objValue = 0;
 			
 			if (this.board.isWinner(playerPiece)) {
-				objValue = -1;
+				objValue = -10000;
 			} else if (this.board.isWinner(computerPiece)) {
-				objValue = 1;
+				objValue = 10000;
+			} else {
+				int playerThreats   = board.getThreats(playerPiece);
+				int computerThreats = board.getThreats(computerPiece);
+				
+				if (playerThreats > 0) {
+					objValue = -100 * playerThreats;
+				} else {
+					objValue = 100 * computerThreats;
+				}
 			}
 			return objValue;
 		}
 
+		private boolean hasThreat(Piece piece) {
+			boolean threat = false;
+						
+			return threat;
+		}
 		
 		public String toString() {
 			StringBuffer sb = new StringBuffer();

@@ -162,6 +162,8 @@ System.out.println("Welcome to Connect Four!");
 			playComputerTurn();
 		}
 		
+		System.out.println("Computer moves in column " + col);
+		
 		// Display the board
 		board.printBoard();		
 	}
