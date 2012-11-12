@@ -13,10 +13,19 @@ public class ConnectFourBoard {
 	
 	public ConnectFourBoard() {
 		this.board = new Piece[COLUMNS][ROWS];
-		this.initialize();
+		this.reset();
 	}
 	
-	private void initialize() {
+	public ConnectFourBoard(ConnectFourBoard other) {
+		this();
+		for (int i = 0; i < COLUMNS; i++) {
+			for (int j = 0; j < ROWS; j++) {
+				this.board[i][j] = other.board[i][j];
+			}
+		}		
+	}
+	
+	public void reset() {
 		for (int i = 0; i < COLUMNS; i++) {
 			for (int j = 0; j < ROWS; j++) {
 				this.board[i][j] = Piece.EMPTY;
@@ -24,8 +33,31 @@ public class ConnectFourBoard {
 		}
 	}
 	
+	public boolean isFull(int col) {
+		boolean full = true;
+		
+		if (getTopOfColumn(col) < ROWS) {
+			full = false;
+		}
+		
+		return full;
+	}
+	
+	public boolean isFull() {
+		boolean full = true;
+		
+		for (int col = 0; col < COLUMNS; col++) {
+			if (!isFull(col)) {
+				full = false;
+				break;
+			}
+		}
+		
+		return full;
+	}
+	
 	public void addToColumn(int col, Piece p) throws OutOfRangeException, ColumnFullException {
-		if (col < 0 || col > COLUMNS)
+		if (col < 0 || col >= COLUMNS)
 			throw new OutOfRangeException();
 		
 		Piece column[] = this.board[col];
@@ -83,7 +115,7 @@ public class ConnectFourBoard {
 	public boolean hasHorizontalWin(Piece p) {
 		boolean won = false;
 
-		for (int i = 0; i < COLUMNS - 4; i++) {
+		for (int i = 0; i <= COLUMNS - 4; i++) {
 			for (int j = 0; j < ROWS; j++) {
 				if (board[i][j]   == p &&
 					board[i+1][j] == p &&
@@ -102,7 +134,7 @@ public class ConnectFourBoard {
 		boolean won = false;
 
 		for (int i = 0; i < COLUMNS; i++) {
-			for (int j = 0; j < ROWS - 4; j++) {
+			for (int j = 0; j <= ROWS - 4; j++) {
 				if (board[i][j]   == p &&
 					board[i][j+1] == p &&
 					board[i][j+2] == p &&
