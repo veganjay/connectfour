@@ -6,7 +6,7 @@ public class ConnectFourBoard {
 	
 	// Constants
 	public static final int COLUMNS = 7;
-	public static final int ROWS    = 10;
+	public static final int ROWS    = 6;
 	
 	// Board
 	private Piece board[][];

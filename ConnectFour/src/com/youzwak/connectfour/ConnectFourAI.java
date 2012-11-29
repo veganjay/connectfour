@@ -13,7 +13,7 @@ public class ConnectFourAI {
 	public static final int MINMAX_DEPTH = 5;
 	
 	// Debug variable
-	private boolean debugEnabled = false;
+	private boolean debugEnabled = true;
 	
 	// Member variables
 	private Piece computerPiece;
